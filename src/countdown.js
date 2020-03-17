@@ -72,6 +72,25 @@
     var sanitize = str.toString().replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1');
     return new RegExp(sanitize);
   }
+  // Pluralize
+  function pluralize(format, count) {
+    var plural = 's', singular = '';
+    if(format) {
+      format = format.replace(/(:|;|\s)/gi, '').split(/\,/);
+      if(format.length === 1) {
+        plural = format[0];
+      } else {
+        singular = format[0];
+        plural = format[1];
+      }
+    }
+    // Fix #187
+    if(Math.abs(count) > 1) {
+      return plural;
+    } else {
+      return singular;
+    }
+  }
   // Time string formatter
   function strftime(offsetObject) {
     return function(format) {
@@ -110,25 +129,6 @@
       format = format.replace(/%%/, '%');
       return format;
     };
-  }
-  // Pluralize
-  function pluralize(format, count) {
-    var plural = 's', singular = '';
-    if(format) {
-      format = format.replace(/(:|;|\s)/gi, '').split(/\,/);
-      if(format.length === 1) {
-        plural = format[0];
-      } else {
-        singular = format[0];
-        plural = format[1];
-      }
-    }
-    // Fix #187
-    if(Math.abs(count) > 1) {
-      return plural;
-    } else {
-      return singular;
-    }
   }
   // The Final Countdown
   var Countdown = function(el, finalDate, options) {
